@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model posts {
+  id           Int      @id @default(autoincrement())
+  score        Int
+  title        String
+  url          String?
+  location     String[]
+  geo_json     Json
+  time_created DateTime @db.Timestamp(6)
+}
