@@ -1,3 +1,4 @@
+import React from "react";
 import Header from "./Header";
 
 type LayoutProps = {
@@ -8,7 +9,9 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="">
       <Header />
-      <main className="h-screen">{children}</main>
+      <div>
+        <main className="h-screen">{children}</main>
+      </div>
     </div>
   );
 }

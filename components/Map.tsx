@@ -17,12 +17,21 @@ import type {
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const Map = ({ posts }: { posts: Array<any> }) => {
+type MapProps = {
+  posts: Array<any>;
+  setCanShow: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Map = (props: MapProps) => {
   const mapNode = useRef(null);
   useEffect(() => {
+    const mapHandler = () => {
+      props.setCanShow(true);
+    };
+
     const featureCollection: FeatureCollection = {
       type: "FeatureCollection",
-      features: posts.map((p) => {
+      features: props.posts.map((p) => {
         let tempCord = p.geo_json.geometry[0].coordinates;
         let feature: Feature = {
           type: "Feature",
@@ -35,6 +44,8 @@ const Map = ({ posts }: { posts: Array<any> }) => {
           },
           properties: {
             score: p.score,
+            url: p.url,
+            title: p.title,
           },
         };
         return feature;
@@ -50,7 +61,6 @@ const Map = ({ posts }: { posts: Array<any> }) => {
       zoom: 2,
     });
     map.on("load", () => {
-      console.log(JSON.stringify(featureCollection));
       map.addSource("posts", {
         type: "geojson",
         data: featureCollection,
@@ -60,6 +70,13 @@ const Map = ({ posts }: { posts: Array<any> }) => {
         source: "posts",
         type: "heatmap",
         paint: {
+          "heatmap-radius": {
+            base: 40,
+            stops: [
+              [2, 50],
+              [8, 100],
+            ],
+          },
           "heatmap-weight": 0.8,
           "heatmap-opacity": 0.7,
           "heatmap-color": [
@@ -69,23 +86,50 @@ const Map = ({ posts }: { posts: Array<any> }) => {
             0,
             "rgba(255,205,178,0)",
             0.2,
-            "rgba(255,180,162,0.8)",
+            "rgba(239,216,239,0.8)",
             0.4,
-            "rgba(229,152,155,0.8)",
+            "rgba(218,177,218,0.8)",
             0.6,
-            "rgba(181,131,141,0.8)",
+            "rgba(192,124,173,0.8)",
             1,
-            "rgba(109,104,117,0.8)",
+            "rgba(147, 64, 110,0.8)",
           ],
         },
+      });
+      map.addLayer({
+        id: "posts-circle",
+        type: "circle",
+        source: "posts",
+        paint: {
+          "circle-radius": {
+            base: 10,
+            stops: [
+              [0, 4],
+              [4, 20],
+            ],
+          },
+          "circle-opacity": 0.8,
+          "circle-color": "white",
+        },
+      });
+      map.on("mouseenter", "posts-circle", function () {
+        map.getCanvas().style.cursor = "pointer";
+      });
+
+      map.on("mouseleave", "posts-circle", function () {
+        map.getCanvas().style.cursor = "";
+      });
+
+      map.on("click", "posts-circle", (e) => {
+        mapHandler();
       });
     });
     return () => {
       map.remove();
     };
-  }, []);
+  }, [props.setCanShow]);
 
-  return <div ref={mapNode} style={{ width: "100%", height: "100%" }} />;
+  return <div className="w-screen h-screen" ref={mapNode} />;
 };
 
 export default Map;

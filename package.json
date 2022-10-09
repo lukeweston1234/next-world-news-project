@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.3",
     "@prisma/client": "^4.4.0",
     "@types/geojson": "^7946.0.10",
     "@types/mapbox-gl": "^2.7.6",
