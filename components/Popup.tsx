@@ -41,30 +41,55 @@ export default function Popup(props: PopupProps) {
       >
         {props.posts[index].title}
       </h2>
-
-      <div className="flex flex-row justify-around font-bold text-sm font-sans h-7 ">
-        {index + 1 < props.posts.length && (
-          <button
-            className="rounded-lg p-1 text-white active:translate-y-0.5 bg-gradient-to-b from-gray-300 to-colors-gradient-purple"
-            onClick={nextHandler}
-          >
-            Next
-          </button>
-        )}
+      <div className="grid grid-cols-3 grid-rows-1 font-bold text-sm font-sans h-7 ">
         {index - 1 >= 0 && (
           <button
-            className="rounded-lg p-1 text-white  active:-translate-y-0.5 bg-gradient-to-b from-gray-300 to-colors-gradient-purple"
+            className="col-start-1 col-end-1 text-colors-header-purple justify-self-start"
             onClick={backHandler}
           >
-            Back
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
           </button>
         )}
         <button
-          className="rounded-lg p-1 text-white  active:translate-y-0.5 bg-gradient-to-b from-gray-300 to-colors-gradient-purple"
+          className="rounded-lg p-1 col-start-2 col-end-2 text-white  active:translate-y-0.5 bg-gradient-to-b from-gray-300 to-colors-gradient-purple"
           onClick={props.deleteFunction}
         >
           Close
         </button>
+        {index + 1 < props.posts.length && (
+          <button
+            className="justify-self-end col-start-3 col-end-3 text-colors-header-purple"
+            onClick={nextHandler}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8.25 4.5l7.5 7.5-7.5 7.5"
+              />
+            </svg>
+          </button>
+        )}
       </div>
     </div>
   );
