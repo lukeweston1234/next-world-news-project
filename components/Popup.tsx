@@ -34,17 +34,17 @@ export default function Popup(props: PopupProps) {
   };
 
   return (
-    <div className="flex p-3 bg-opacity-100 flex-col z-50 m-0 w-52 h-56 rounded-lg justify-between bg-gradient-to-b from-white to-colors-navbar-purple">
+    <div className="shadow-md flex p-3 bg-opacity-100 flex-col z-50 m-0 w-52 h-56 rounded-lg justify-between bg-gradient-to-b from-white to-colors-navbar-purple">
       <h2
         onClick={redirectHandle}
-        className="font-bold text-colors-header-purple text-sm  font-sans  overflow-y-auto cursor-pointer"
+        className="mb-2 font-bold text-colors-header-purple text-sm  font-sans  overflow-y-auto cursor-pointer transition ease-in hover:underline"
       >
         {props.posts[index].title}
       </h2>
       <div className="grid grid-cols-3 grid-rows-1 font-bold text-sm font-sans h-7 ">
         {index - 1 >= 0 && (
           <button
-            className="col-start-1 col-end-1 text-colors-header-purple justify-self-start"
+            className="active:translate-y-0.5 col-start-1 col-end-1 text-colors-header-purple justify-self-start"
             onClick={backHandler}
           >
             <svg
@@ -64,14 +64,14 @@ export default function Popup(props: PopupProps) {
           </button>
         )}
         <button
-          className="rounded-lg p-1 col-start-2 col-end-2 text-white  active:translate-y-0.5 bg-gradient-to-b from-gray-300 to-colors-gradient-purple"
+          className="shadow-md  active:translate-y-0.5 rounded-lg p-1 col-start-2 col-end-2 bg-gradient-to-b from-gray-300 to-colors-gradient-purple text-white transition ease-in-out hover:opacity-60"
           onClick={props.deleteFunction}
         >
           Close
         </button>
         {index + 1 < props.posts.length && (
           <button
-            className="justify-self-end col-start-3 col-end-3 text-colors-header-purple"
+            className="active:translate-y-0.5 justify-self-end col-start-3 col-end-3 text-colors-header-purple"
             onClick={nextHandler}
           >
             <svg
