@@ -8,3 +8,16 @@
     @apply font-sans;
   }
 }
+
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  border-radius: 10% !important;
+}
+
+.mapboxgl-popup {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.mapboxgl-popup-anchor-top {
+  padding: 0 !important;
+}

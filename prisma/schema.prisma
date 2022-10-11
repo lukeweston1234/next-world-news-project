@@ -8,11 +8,19 @@ datasource db {
 }
 
 model posts {
-  id           Int      @id @default(autoincrement())
-  score        Int
-  title        String
+  id           Int       @id @default(autoincrement())
+  title        String?
   url          String?
-  location     String[]
-  geo_json     Json
-  time_created DateTime @db.Timestamp(6)
+  score        Int?
+  time_created DateTime? @db.Timestamp(6)
+  location_id  Int?
+  location     location? @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model location {
+  id    Int     @id @default(autoincrement())
+  name  String?
+  long  Float?
+  lat   Float?
+  posts posts[]
 }

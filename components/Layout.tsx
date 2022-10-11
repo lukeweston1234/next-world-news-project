@@ -7,10 +7,10 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="">
+    <div>
       <Header />
       <div>
-        <main className="h-screen">{children}</main>
+        <main>{children}</main>
       </div>
     </div>
   );

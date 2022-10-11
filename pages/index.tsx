@@ -2,25 +2,30 @@ import React, { useState } from "react";
 import Map from "../components/Map";
 import Head from "next/head";
 import { PrismaClient } from "@prisma/client";
-import Sidebar from "../components/Sidebar";
 
 function App({ posts }: { posts: Array<any> }) {
-  const [canShow, setCanShow] = useState(true);
-
   return (
-    <div className="grid grid-rows-9">
+    <div>
       <Head>
         <title>World News Map</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,600;1,700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
-      <Sidebar canShow={canShow} setCanShow={setCanShow} />
-      <Map posts={posts} setCanShow={setCanShow} />
+      <Map posts={posts} />
     </div>
   );
 }
 
 export async function getServerSideProps() {
   const prisma = new PrismaClient();
-  const posts = await prisma.posts.findMany();
+  const posts = await prisma.location.findMany({
+    include: {
+      posts: true,
+    },
+  });
 
   return {
     props: {

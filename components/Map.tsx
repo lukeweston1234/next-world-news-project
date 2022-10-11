@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import * as ReactDOM from "react-dom";
 import type {
   Feature,
   FeatureCollection,
@@ -13,39 +14,36 @@ import type {
   GeoJsonTypes,
   GeometryObject,
 } from "geojson";
-
+import Popup from "./Popup";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 type MapProps = {
   posts: Array<any>;
-  setCanShow: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Map = (props: MapProps) => {
   const mapNode = useRef(null);
+  const popupRef = useRef<mapboxgl.Popup>(
+    new mapboxgl.Popup({
+      closeButton: false,
+    })
+  );
   useEffect(() => {
-    const mapHandler = () => {
-      props.setCanShow(true);
-    };
-
     const featureCollection: FeatureCollection = {
       type: "FeatureCollection",
       features: props.posts.map((p) => {
-        let tempCord = p.geo_json.geometry[0].coordinates;
         let feature: Feature = {
           type: "Feature",
           id: p.id,
           geometry: {
             type: "Point",
-            coordinates: tempCord.map((t: String) => {
-              return Number(t);
-            }),
+            coordinates: [p.long, p.lat],
           },
           properties: {
-            score: p.score,
-            url: p.url,
-            title: p.title,
+            name: p.name,
+            posts: p.posts,
+            postsWeight: p.posts.length,
           },
         };
         return feature;
@@ -77,8 +75,15 @@ const Map = (props: MapProps) => {
               [8, 100],
             ],
           },
-          "heatmap-weight": 0.8,
-          "heatmap-opacity": 0.7,
+          "heatmap-weight": {
+            property: "postsWeight",
+            type: "exponential",
+            stops: [
+              [1, 0.3],
+              [10, 1],
+            ],
+          },
+          "heatmap-opacity": 0.9,
           "heatmap-color": [
             "interpolate",
             ["linear"],
@@ -86,13 +91,13 @@ const Map = (props: MapProps) => {
             0,
             "rgba(255,205,178,0)",
             0.2,
-            "rgba(239,216,239,0.8)",
+            "rgba(239,216,239,1)",
             0.4,
-            "rgba(218,177,218,0.8)",
+            "rgba(218,177,218,1)",
             0.6,
-            "rgba(192,124,173,0.8)",
+            "rgba(192,124,173,1)",
             1,
-            "rgba(147, 64, 110,0.8)",
+            "rgba(147, 64, 110,1)",
           ],
         },
       });
@@ -101,13 +106,7 @@ const Map = (props: MapProps) => {
         type: "circle",
         source: "posts",
         paint: {
-          "circle-radius": {
-            base: 10,
-            stops: [
-              [0, 4],
-              [4, 20],
-            ],
-          },
+          "circle-radius": 6,
           "circle-opacity": 0.8,
           "circle-color": "white",
         },
@@ -121,15 +120,31 @@ const Map = (props: MapProps) => {
       });
 
       map.on("click", "posts-circle", (e) => {
-        mapHandler();
+        let posts = JSON.parse(e.features![0].properties!.posts);
+        console.log(posts);
+        for (let i in posts) {
+          console.log(posts[i]);
+        }
+        const deleteNode = () => {
+          popupRef.current.remove();
+        };
+        let popupNode = document.createElement("div");
+        ReactDOM.render(
+          <Popup deleteFunction={deleteNode} posts={posts} />,
+          popupNode
+        );
+        popupRef.current
+          .setLngLat(e.lngLat)
+          .setDOMContent(popupNode)
+          .addTo(map);
       });
     });
     return () => {
       map.remove();
     };
-  }, [props.setCanShow]);
+  }, []);
 
-  return <div className="w-screen h-screen" ref={mapNode} />;
+  return <div className="w-screen h-screen p-0" ref={mapNode} />;
 };
 
 export default Map;

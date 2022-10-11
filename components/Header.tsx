@@ -1,7 +1,12 @@
 export default function Header() {
   return (
-    <div className="text-lg h-1/9 text-center justify-center border-r-4">
-      <h1 className="text-xl inline-block align-middle">World News Map</h1>
+    <div
+      className="shadow-lg h-20 flex space-around items-center pl-24
+    bg-gradient-to-b from-white to-colors-navbar-purple"
+    >
+      <h1 className="align-middle text-colors-header-purple font-sans italic font-bold text-5xl">
+        Geostory
+      </h1>
     </div>
   );
 }
