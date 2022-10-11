@@ -19,7 +19,7 @@ function App({ posts }: { posts: Array<any> }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const prisma = new PrismaClient();
   const posts = await prisma.location.findMany({
     include: {
@@ -31,6 +31,7 @@ export async function getServerSideProps() {
     props: {
       posts: JSON.parse(JSON.stringify(posts)),
     },
+    revalidate: 300,
   };
 }
 
