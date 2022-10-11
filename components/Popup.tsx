@@ -44,7 +44,7 @@ export default function Popup(props: PopupProps) {
       <div className="grid grid-cols-3 grid-rows-1 font-bold text-sm font-sans h-7 ">
         {index - 1 >= 0 && (
           <button
-            className="active:translate-y-0.5 col-start-1 col-end-1 text-colors-header-purple justify-self-start"
+            className="active:translate-y-0.5 col-start-1 col-end-1 text-colors-header-purple justify-self-start transition ease-in-out hover:opacity-60"
             onClick={backHandler}
           >
             <svg
@@ -71,7 +71,7 @@ export default function Popup(props: PopupProps) {
         </button>
         {index + 1 < props.posts.length && (
           <button
-            className="active:translate-y-0.5 justify-self-end col-start-3 col-end-3 text-colors-header-purple"
+            className="active:translate-y-0.5 justify-self-end col-start-3 col-end-3 text-colors-header-purple transition ease-in-out hover:opacity-60"
             onClick={nextHandler}
           >
             <svg
