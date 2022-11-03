@@ -7,7 +7,7 @@ function App({ posts }: { posts: Array<any> }) {
   return (
     <div>
       <Head>
-        <title>World News Map</title>
+        <title>Geostory</title>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,300;0,600;1,700&display=swap"
